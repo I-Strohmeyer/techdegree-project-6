@@ -41,6 +41,22 @@ function getRandomPhraseAsArray(arr) {
 const characterArray = getRandomPhraseAsArray(phrases);
 console.log(characterArray);
 
+function addPhraseToDisplay(arr) {
+    for ( let i = 0; i < characterArray.length; i += 1) {
+        //creates list item for each character in the arrray
+        const li = document.createElement('li');
+        //put character inside list item
+        li.textContent = characterArray[i];
+        //append list item to html
+        
 
-//getRandomPhraseAsArray(phrases);
+        // if character is a letter assign a class to it
+        if ( characterArray[i] !== ' ') {
+            li.classList.add('letter');
+        }
 
+        document.querySelector('#phrase ul').appendChild(li);
+    }    
+}
+
+addPhraseToDisplay(characterArray);
