@@ -1,8 +1,11 @@
 // Variables
-const qwerty = document.getElementById('querty');
+const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
-let missed = 0;
 const startButton = document.getElementsByClassName('btn__reset')[0];
+const button = document.querySelector('button');
+
+let missed = 0;
+
 
 
 // listens to the start button being clicked
@@ -13,11 +16,11 @@ startButton.addEventListener('click', () => {
 
 // set of complete phrases
 const phrases = [
-    'Change the world by being yourself',
-    'Aspire to inspire before we expire',
-    'Strive for greatness',
-    'To live will be an awfully big adventure',
-    'Daypaio experienced an unexpected downtime'
+    'sun upon your soul',
+    'frontend developer',
+    'strive for greatness',
+    'learning is the key',
+    'unexpected downtime'
 ];
 
 // get random number between a min and max number 
@@ -25,7 +28,7 @@ function getRandomInt(min, max) {
     min = Math.floor(min);
     max = Math.ceil(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 function getRandomPhraseAsArray(arr) {
     //get a random number between 0 and the length of the array
@@ -36,7 +39,7 @@ function getRandomPhraseAsArray(arr) {
 
     // get an arrary of characters from that string
     return randomPhrase.split('');
-} 
+}; 
 
 const characterArray = getRandomPhraseAsArray(phrases);
 console.log(characterArray);
@@ -53,10 +56,51 @@ function addPhraseToDisplay(arr) {
         // if character is a letter assign a class to it
         if ( characterArray[i] !== ' ') {
             li.classList.add('letter');
-        }
+        } else {
+            li.classList.add('space');
+        } 
 
         document.querySelector('#phrase ul').appendChild(li);
     }    
-}
+};
 
 addPhraseToDisplay(characterArray);
+
+
+// checks if a certain letter is in the phrase
+ function checkLetter(button) {
+    // gets all elements with a class of letter
+    const letter = document.getElementsByClassName('letter');
+    let match = null;
+    for (let i = 0; i < letter.length; i += 1) {
+        //console.log(letter[i].textContent);
+        // if condition is met, assign a class to it
+        if ( button.textContent === letter[i].textContent) {
+           letter[i].classList.add('show');
+           match = button.textContent;
+        }
+    }
+
+    return match
+};
+
+
+//listens to a letter button being clicked on screen
+qwerty.addEventListener('click', (event) => {
+    const cButton = event.target;
+    // apply class of chosen for already clicked buttons
+    if (cButton.tagName === 'BUTTON') {
+        cButton.classList.add('chosen');
+        //cButton.disabled = 'true';
+    };
+    console.log(cButton.textContent);
+    const letterFound = checkLetter(cButton);
+
+    if (letterFound === null) {
+        missed += 1;
+    }
+//console.log(missed);
+    if (checkLetter === null) {
+        alert('no match');
+    }
+});
