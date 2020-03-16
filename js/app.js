@@ -3,6 +3,7 @@ const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startButton = document.getElementsByClassName('btn__reset')[0];
 const button = document.querySelector('button');
+const overlay = document.getElementById('overlay');
 
 let missed = 0;
 
@@ -84,6 +85,27 @@ addPhraseToDisplay(characterArray);
     return match
 };
 
+function checkWin() {
+    const liLetter = document.getElementsByClassName('letter');
+    const liShow = document.getElementsByClassName('show');
+    if (liLetter.length === liShow.length) {
+        overlay.classList.add('win');
+        overlay.children[0].textContent = 'You won. Good Job!';
+        overlay.style.display = 'flex';
+        location.reload();
+
+    } else if ( missed >= 5 ) {
+       // alert('You lost');
+        overlay.classList.add('lose');
+        overlay.children[0].textContent = 'You lost. No worries, try it again!';
+        overlay.style.display = 'flex';
+        location.reload();
+
+    }
+}
+
+
+
 
 //listens to a letter button being clicked on screen
 qwerty.addEventListener('click', (event) => {
@@ -91,16 +113,39 @@ qwerty.addEventListener('click', (event) => {
     // apply class of chosen for already clicked buttons
     if (cButton.tagName === 'BUTTON') {
         cButton.classList.add('chosen');
-        //cButton.disabled = 'true';
+        cButton.disabled = 'true';
     };
     console.log(cButton.textContent);
     const letterFound = checkLetter(cButton);
 
     if (letterFound === null) {
+        const liveHearts = document.getElementsByClassName('tries');
+        
+
+        liveHearts[missed].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
         missed += 1;
+
+
+        /*
+        let heartToDisableIndex = liveHearts.length - missed;
+        
+        liveHearts[heartToDisableIndex].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
+
+        if( heartToDisableIndex === 0 )
+            alert('you lost the game');*/
+        
+        
+        /*for (let i = 0; i < liveHearts.length; i += 1) {
+            liveHearts[i].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
+            missed += 1;
+            
+            console.log(missed);
+        }*/
+        
+        
     }
 //console.log(missed);
-    if (checkLetter === null) {
-        alert('no match');
-    }
+    checkWin();
+    
 });
+
