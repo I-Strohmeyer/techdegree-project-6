@@ -13,6 +13,8 @@ let missed = 0;
 startButton.addEventListener('click', () => {
     let overlay = document.getElementById('overlay');
     overlay.style.display = 'none';
+    overlay.classList.remove('win');
+    overlay.classList.remove('lose');
 });
 
 // set of complete phrases
@@ -89,18 +91,15 @@ function checkWin() {
     const liLetter = document.getElementsByClassName('letter');
     const liShow = document.getElementsByClassName('show');
     if (liLetter.length === liShow.length) {
-        overlay.classList.add('win');
-        overlay.children[0].textContent = 'You won. Good Job!';
-        overlay.style.display = 'flex';
-        location.reload();
+       overlay.classList.add('win');
+       overlay.children[0].textContent = 'You won. Good Job!';
+       overlay.style.display = 'flex';
 
     } else if ( missed >= 5 ) {
        // alert('You lost');
-        overlay.classList.add('lose');
-        overlay.children[0].textContent = 'You lost. No worries, try it again!';
-        overlay.style.display = 'flex';
-        location.reload();
-
+       overlay.classList.add('lose');
+       overlay.children[0].textContent = 'You lost. No worries, try it again!';
+       overlay.style.display = 'flex';
     }
 }
 
@@ -110,15 +109,15 @@ function checkWin() {
 //listens to a letter button being clicked on screen
 qwerty.addEventListener('click', (event) => {
     const cButton = event.target;
+
     // apply class of chosen for already clicked buttons
     if (cButton.tagName === 'BUTTON') {
         cButton.classList.add('chosen');
         cButton.disabled = 'true';
-    };
-    console.log(cButton.textContent);
-    const letterFound = checkLetter(cButton);
 
-    if (letterFound === null) {
+        const letterFound = checkLetter(cButton);
+
+        if (letterFound === null) {
         const liveHearts = document.getElementsByClassName('tries');
         
 
@@ -143,9 +142,13 @@ qwerty.addEventListener('click', (event) => {
         }*/
         
         
-    }
+        }
 //console.log(missed);
+    
+    };
+    console.log(cButton.textContent);
     checkWin();
+    
     
 });
 
