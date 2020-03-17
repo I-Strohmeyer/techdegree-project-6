@@ -11,10 +11,13 @@ let missed = 0;
 
 // listens to the start button being clicked
 startButton.addEventListener('click', () => {
-    let overlay = document.getElementById('overlay');
     overlay.style.display = 'none';
     overlay.classList.remove('win');
     overlay.classList.remove('lose');
+
+    resetGame();
+    
+    startGame();
 });
 
 // set of complete phrases
@@ -44,30 +47,57 @@ function getRandomPhraseAsArray(arr) {
     return randomPhrase.split('');
 }; 
 
-const characterArray = getRandomPhraseAsArray(phrases);
-console.log(characterArray);
-
 function addPhraseToDisplay(arr) {
-    for ( let i = 0; i < characterArray.length; i += 1) {
-        //creates list item for each character in the arrray
+    for ( let i = 0; i < arr.length; i += 1) {
+        //creates list item for each character in the array
         const li = document.createElement('li');
         //put character inside list item
-        li.textContent = characterArray[i];
+        li.textContent = arr[i];
         //append list item to html
         
 
         // if character is a letter assign a class to it
-        if ( characterArray[i] !== ' ') {
+        if ( arr[i] !== ' ') {
             li.classList.add('letter');
         } else {
             li.classList.add('space');
         } 
 
         document.querySelector('#phrase ul').appendChild(li);
-    }    
+    }
 };
 
-addPhraseToDisplay(characterArray);
+
+function resetGame() {
+    //Make sure the missed count is back to 0
+    missed = 0;
+
+    //Make sure the hearts are reset to the correct image
+    const liveHearts = document.getElementsByClassName('tries');
+    for (let i = 0; i < liveHearts.length; i += 1) {
+        liveHearts[i].innerHTML = '<img src="images/liveHeart.png" height="35px" width="30px">';
+    }
+
+    //Remove button classes
+    const allButtons = qwerty.querySelectorAll('button');
+    for ( let i = 0; i < allButtons.length; i += 1) {
+        allButtons[i].classList.remove('chosen');
+        allButtons[i].disabled = false;
+    }
+    
+    //Make any li elements from previous game have been removed
+    const ul = document.querySelector('#phrase ul');
+    ul.innerHTML = '';    
+
+}
+
+function startGame() {
+    //Add a random new phrase to the screen
+    const characterArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(characterArray);
+    console.log(characterArray);
+}
+
 
 
 // checks if a certain letter is in the phrase
@@ -123,25 +153,6 @@ qwerty.addEventListener('click', (event) => {
 
         liveHearts[missed].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
         missed += 1;
-
-
-        /*
-        let heartToDisableIndex = liveHearts.length - missed;
-        
-        liveHearts[heartToDisableIndex].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
-
-        if( heartToDisableIndex === 0 )
-            alert('you lost the game');*/
-        
-        
-        /*for (let i = 0; i < liveHearts.length; i += 1) {
-            liveHearts[i].innerHTML = '<img src="images/lostHeart.png" height="35px" width="30px">';
-            missed += 1;
-            
-            console.log(missed);
-        }*/
-        
-        
         }
 //console.log(missed);
     
